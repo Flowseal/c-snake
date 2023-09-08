@@ -24,6 +24,7 @@
     <ProjectGuid>{46e3a497-ec91-4658-9a60-ac2f1d664ca6}</ProjectGuid>
     <RootNamespace>Snake</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>SnakeGame</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -127,16 +128,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="fps_lock.cpp" />
-    <ClCompile Include="game_interface.cpp" />
-    <ClCompile Include="game_controller.cpp" />
-    <ClCompile Include="Snake.cpp" />
+    <ClCompile Include="fps_lock\fps_lock.cpp" />
+    <ClCompile Include="game_interface\game_interface.cpp" />
+    <ClCompile Include="game_controller\game_controller.cpp" />
+    <ClCompile Include="snake\snake.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="utils\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="coord.h" />
-    <ClInclude Include="fps_lock.h" />
-    <ClInclude Include="game_interface.h" />
-    <ClInclude Include="game_controller.h" />
+    <ClInclude Include="fps_lock\fps_lock.h" />
+    <ClInclude Include="game_interface\game_interface.h" />
+    <ClInclude Include="game_controller\game_controller.h" />
+    <ClInclude Include="snake\snake.h" />
+    <ClInclude Include="utils\utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

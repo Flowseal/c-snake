@@ -1,9 +1,9 @@
-#ifndef SNAKE_INTERFACE_H
-#define SNAKE_INTERFACE_H
+#ifndef SNAKEGAME_INTERFACE_H
+#define SNAKEGAME_INTERFACE_H
 
 #include <Windows.h>
 #include <vector>
-#include "coord.h"
+#include "../utils/utils.h"
 
 enum e_fg_color
 {

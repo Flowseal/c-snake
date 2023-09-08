@@ -3,21 +3,14 @@
 #include <string>
 #include "game_interface.h"
 
-WORD TextAttributes = 0;
-
 void set_output_color( e_fg_color fg_color )
 {
-	// Backup previous TextAttributes
-	CONSOLE_SCREEN_BUFFER_INFO Info;
-	GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &Info );
-	TextAttributes = Info.wAttributes;
-
 	SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), fg_color );
 }
 
 void reset_output_color( )
 {
-	SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), TextAttributes );
+	SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), FG_LIGHTGRAY );
 }
 
 void c_game_interface::draw_walls( )
@@ -60,14 +53,14 @@ void c_game_interface::draw_walls( )
 
 void c_game_interface::draw_snake( coord_t snake_head, std::vector<coord_t> snake_tail )
 {
-	set_output_color( FG_BROWN );
+	set_output_color( FG_LIGHTCYAN );
 
 	m_cursor_pos.X = snake_head.x + 1;
 	m_cursor_pos.Y = snake_head.y + 1;
 	SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), m_cursor_pos );
 	std::cout << '*';
 
-	reset_output_color( );
+	set_output_color( FG_CYAN );
 
 	for ( int i = 0; i < snake_tail.size( ); i++ )
 	{
@@ -76,6 +69,8 @@ void c_game_interface::draw_snake( coord_t snake_head, std::vector<coord_t> snak
 		SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), m_cursor_pos );
 		std::cout << '*';
 	}
+
+	reset_output_color( );
 }
 
 void c_game_interface::draw_apple( coord_t coord )
