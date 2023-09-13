@@ -1,9 +1,10 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include "fps_lock/fps_lock.h"
-#include "game_interface/game_interface.h"
-#include "game_controller/game_controller.h"
+
+#include "FpsLock/FpsLock.h"
+#include "GameInterface/GameInterface.h"
+#include "GameController/GameController.h"
 
 void readKeys( GameController& gameController );
 

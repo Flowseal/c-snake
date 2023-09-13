@@ -1,4 +1,4 @@
-#include "game_controller.h"
+#include "GameController.h"
 
 Coord GameController::generateNextAppleCoords( )
 {

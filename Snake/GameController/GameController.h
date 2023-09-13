@@ -2,8 +2,8 @@
 #define SNAKEGAME_GAME_CONTROLLER_H
 
 #include <vector>
-#include "../utils/utils.h"
-#include "../snake/snake.h"
+#include "../Utils/Utils.h"
+#include "../Snake/Snake.h"
 
 enum class PlayerState {
 	ALIVE, LOSE, WIN

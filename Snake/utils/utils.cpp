@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "Utils.h"
 
 bool operator==( const Coord& lhs, const Coord& rhs )
 {

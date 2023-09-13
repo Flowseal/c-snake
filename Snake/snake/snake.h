@@ -2,7 +2,7 @@
 #define SNAKEGAME__H
 
 #include <vector>
-#include "../utils/utils.h"
+#include "../Utils/Utils.h"
 
 enum class MoveDirection {
 	UP, RIGHT, DOWN, LEFT

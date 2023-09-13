@@ -15,30 +15,39 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Snake.cpp">
+    <ClCompile Include="fps_lock\FpsLock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fps_lock.cpp">
+    <ClCompile Include="game_interface\GameInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game_interface.cpp">
+    <ClCompile Include="game_controller\GameController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game_controller.cpp">
+    <ClCompile Include="snake\Snake.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="fps_lock.h">
+    <ClInclude Include="fps_lock\FpsLock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="game_controller.h">
+    <ClInclude Include="game_interface\GameInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="game_interface.h">
+    <ClInclude Include="game_controller\GameController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="coord.h">
+    <ClInclude Include="snake\Snake.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

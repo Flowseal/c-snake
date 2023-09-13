@@ -1,4 +1,4 @@
-#include "fps_lock.h"
+#include "FpsLock.h"
 
 void FpsLock::waitForNextFrame( )
 {

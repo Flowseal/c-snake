@@ -1,7 +1,8 @@
 #include <iostream>
 #include <windows.h>
 #include <string>
-#include "game_interface.h"
+
+#include "GameInterface.h"
 
 void setOutputColor( FgColor fgColor )
 {

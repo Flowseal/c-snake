@@ -3,7 +3,7 @@
 
 #include <Windows.h>
 #include <vector>
-#include "../utils/utils.h"
+#include "../Utils/Utils.h"
 
 enum FgColor
 {

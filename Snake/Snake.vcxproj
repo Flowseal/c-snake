@@ -128,19 +128,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="fps_lock\fps_lock.cpp" />
-    <ClCompile Include="game_interface\game_interface.cpp" />
-    <ClCompile Include="game_controller\game_controller.cpp" />
-    <ClCompile Include="snake\snake.cpp" />
+    <ClCompile Include="FpsLock\FpsLock.cpp" />
+    <ClCompile Include="GameInterface\GameInterface.cpp" />
+    <ClCompile Include="GameController\GameController.cpp" />
+    <ClCompile Include="Snake\Snake.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="utils\utils.cpp" />
+    <ClCompile Include="Utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="fps_lock\fps_lock.h" />
-    <ClInclude Include="game_interface\game_interface.h" />
-    <ClInclude Include="game_controller\game_controller.h" />
-    <ClInclude Include="snake\snake.h" />
-    <ClInclude Include="utils\utils.h" />
+    <ClInclude Include="FpsLock\FpsLock.h" />
+    <ClInclude Include="GameInterface\GameInterface.h" />
+    <ClInclude Include="GameController\GameController.h" />
+    <ClInclude Include="Snake\Snake.h" />
+    <ClInclude Include="Utils\Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
