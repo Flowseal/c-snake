@@ -4,19 +4,19 @@
 #include <chrono>
 #include <thread>
 
-class c_fps_lock {
+class FpsLock {
 private:
-	std::chrono::system_clock::time_point a = std::chrono::system_clock::now( );
-	std::chrono::system_clock::time_point b = std::chrono::system_clock::now( );
+	std::chrono::system_clock::time_point mPreTime = std::chrono::system_clock::now( );
+	std::chrono::system_clock::time_point mPostTime = std::chrono::system_clock::now( );
 
-	int m_fps { 1 };
+	int mFps { 1 };
 
 public:
-	c_fps_lock( int fps ) {
-		this->m_fps = fps;
+	FpsLock( int fps ) {
+		mFps = fps;
 	}
 
-	void wait_next_frame( );
+	void waitForNextFrame( );
 };
 
 #endif

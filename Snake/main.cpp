@@ -5,75 +5,75 @@
 #include "game_interface/game_interface.h"
 #include "game_controller/game_controller.h"
 
-void read_keys( c_game_controller& game_controller );
+void readKeys( GameController& gameController );
 
 int main( )
 {
-	const int area_size = 10;
-	const int frame_per_second = 3;
+	const int areaSize = 10;
+	const int fps = 3;
 	srand( (unsigned int)time( NULL ) );
 
-	c_fps_lock fps_lock( frame_per_second );
-	c_game_interface game_interface( area_size );
-	c_game_controller game_controller( area_size );
+	FpsLock fpsLock( fps );
+	GameInterface gameInterface( areaSize );
+	GameController gameController( areaSize );
 
-	std::thread key_reading( read_keys, std::ref( game_controller ) );
+	std::thread keyReadingThread( readKeys, std::ref( gameController ) );
 
 	while ( true )
 	{
 		system( "cls" );
-		game_interface.draw_walls( );
-		game_interface.hide_cursor( );
-		game_controller.reset( );
+		gameInterface.drawWalls( );
+		gameInterface.hideCursor( );
+		gameController.reset( );
 
-		while ( game_controller.get_player_state( ) == e_player_state::ALIVE )
+		while ( gameController.getPlayerState( ) == PlayerState::ALIVE )
 		{
-			fps_lock.wait_next_frame( );
+			fpsLock.waitForNextFrame( );
 
-			game_controller.get_snake( ).move_snake( );
-			game_controller.update_states( );
+			gameController.getSnake( ).moveSnake( );
+			gameController.updateStates( );
 
-			game_interface.clear_area( );
-			game_interface.draw_apple( game_controller.get_apple( ) );
-			game_interface.draw_snake( game_controller.get_snake( ).get_snake_head( ), game_controller.get_snake( ).get_snake_tail( ) );
+			gameInterface.clearArea( );
+			gameInterface.drawApple( gameController.getApple( ) );
+			gameInterface.drawSnake( gameController.getSnake( ).getSnakeHead( ), gameController.getSnake( ).getSnakeTail( ) );
 		}
 
 		system( "cls" );
 
-		if ( game_controller.get_player_state( ) == e_player_state::LOSE )
+		if ( gameController.getPlayerState( ) == PlayerState::LOSE )
 			std::cout << "You have lost :(" << std::endl << "Press SPACE to try again";
 		else
 			std::cout << "YOU WON!" << std::endl << "Press SPACE to try again";
 
-		while ( game_controller.get_player_state( ) != e_player_state::ALIVE )
+		while ( gameController.getPlayerState( ) != PlayerState::ALIVE )
 		{
 			std::this_thread::sleep_for( std::chrono::milliseconds( 1 ) );
 		}
 	}
 }
 
-void read_keys( c_game_controller& game_controller )
+void readKeys( GameController& gameController )
 {
 	while ( true )
 	{
-		if ( game_controller.get_player_state( ) == e_player_state::ALIVE )
+		if ( gameController.getPlayerState( ) == PlayerState::ALIVE )
 		{
 			if ( GetKeyState( VK_UP ) & 0x8000 )
-				game_controller.get_snake( ).set_move_direction( e_move_direction::UP );
+				gameController.getSnake( ).setMoveDirection( MoveDirection::UP );
 
 			if ( GetKeyState( VK_RIGHT ) & 0x8000 )
-				game_controller.get_snake( ).set_move_direction( e_move_direction::RIGHT );
+				gameController.getSnake( ).setMoveDirection( MoveDirection::RIGHT );
 
 			if ( GetKeyState( VK_DOWN ) & 0x8000 )
-				game_controller.get_snake( ).set_move_direction( e_move_direction::DOWN );
+				gameController.getSnake( ).setMoveDirection( MoveDirection::DOWN );
 
 			if ( GetKeyState( VK_LEFT ) & 0x8000 )
-				game_controller.get_snake( ).set_move_direction( e_move_direction::LEFT );
+				gameController.getSnake( ).setMoveDirection( MoveDirection::LEFT );
 		}
 		else
 		{
 			if ( GetKeyState( VK_SPACE ) & 0x8000 )
-				game_controller.set_player_state( e_player_state::ALIVE );
+				gameController.setPlayerState( PlayerState::ALIVE );
 		}
 	}
 }

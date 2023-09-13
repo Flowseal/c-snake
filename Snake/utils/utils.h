@@ -1,7 +1,7 @@
 #pragma once
 
-struct coord_t {
+struct Coord {
 	int x, y;
 };
 
-bool operator==( const coord_t& lhs, const coord_t& rhs );
+bool operator==( const Coord& lhs, const Coord& rhs );

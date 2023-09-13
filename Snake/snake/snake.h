@@ -4,28 +4,28 @@
 #include <vector>
 #include "../utils/utils.h"
 
-enum class e_move_direction {
+enum class MoveDirection {
 	UP, RIGHT, DOWN, LEFT
 };
 
-class c_snake {
+class Snake {
 private:
-	e_move_direction m_move_direction { e_move_direction::RIGHT };
+	MoveDirection mMoveDirection { MoveDirection::RIGHT };
 
-	coord_t m_snake_head { };
-	std::vector<coord_t> m_snake_tail { };
+	Coord mSnakeHead { };
+	std::vector<Coord> mSnakeTail { };
 
 public:
-	void move_snake( );
+	void moveSnake( );
 
-	e_move_direction get_move_direction( ) { return m_move_direction; };
-	void set_move_direction( e_move_direction move_direction ) { m_move_direction = move_direction; };
+	MoveDirection getMoveDirection( ) { return mMoveDirection; };
+	void setMoveDirection( MoveDirection moveDirection ) { mMoveDirection = moveDirection; };
 
-	coord_t get_snake_head( ) { return m_snake_head; };
-	void set_snake_head( coord_t snake_head ) { m_snake_head = snake_head; };
+	Coord getSnakeHead( ) { return mSnakeHead; };
+	void setSnakeHead( Coord snakeHead ) { mSnakeHead = snakeHead; };
 
-	std::vector<coord_t>& get_snake_tail( ) { return m_snake_tail; };
-	void set_snake_tail( std::vector<coord_t> snake_tail ) { m_snake_tail = snake_tail; };
+	std::vector<Coord>& getSnakeTail( ) { return mSnakeTail; };
+	void setSnakeTail( std::vector<Coord> snakeTail ) { mSnakeTail = snakeTail; };
 };
 
 #endif

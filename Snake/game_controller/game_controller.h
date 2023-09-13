@@ -5,32 +5,32 @@
 #include "../utils/utils.h"
 #include "../snake/snake.h"
 
-enum class e_player_state {
+enum class PlayerState {
 	ALIVE, LOSE, WIN
 };
 
-class c_game_controller {
+class GameController {
 private:
-	int m_area_size { 20 };
-	coord_t m_apple { };
-	c_snake m_snake { };
-	e_player_state m_player_state { e_player_state::ALIVE };
+	int mAreaSize { 20 };
+	Coord mApple { };
+	Snake mSnake { };
+	PlayerState mPlayerState { PlayerState::ALIVE };
 
 public:
-	void update_states( );
+	void updateStates( );
 	void reset( );
 
-	c_snake& get_snake( ) { return m_snake; };
+	Snake& getSnake( ) { return mSnake; };
 
-	coord_t next_apple_coords( );
-	coord_t get_apple( ) { return m_apple; };
+	Coord generateNextAppleCoords( );
+	Coord getApple( ) { return mApple; };
 
-	e_player_state get_player_state( ) { return m_player_state; };
-	void set_player_state( e_player_state new_player_state ) { m_player_state = new_player_state; };
+	PlayerState getPlayerState( ) { return mPlayerState; };
+	void setPlayerState( PlayerState playerState ) { mPlayerState = playerState; };
 
-	c_game_controller( int area_size )
+	GameController( int areaSize )
 	{
-		this->m_area_size = area_size;
+		mAreaSize = areaSize;
 	}
 };
 

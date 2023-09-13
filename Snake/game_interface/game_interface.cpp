@@ -3,89 +3,89 @@
 #include <string>
 #include "game_interface.h"
 
-void set_output_color( e_fg_color fg_color )
+void setOutputColor( FgColor fgColor )
 {
-	SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), fg_color );
+	SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), fgColor );
 }
 
-void reset_output_color( )
+void resetOutputColor( )
 {
 	SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), FG_LIGHTGRAY );
 }
 
-void c_game_interface::draw_walls( )
+void GameInterface::drawWalls( )
 {
-	set_output_color( FG_WHITE );
-	std::string long_wall( m_area_size + 2, 'X' );
+	setOutputColor( FG_WHITE );
+	std::string longWall( mAreaSize + 2, 'X' );
 
 	// top wall
-	m_cursor_pos.X = 0;
-	m_cursor_pos.Y = 0;
-	SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), m_cursor_pos );
-	std::cout << long_wall;
+	mCursorPos.X = 0;
+	mCursorPos.Y = 0;
+	SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), mCursorPos );
+	std::cout << longWall;
 
 	// bottom wall
-	m_cursor_pos.X = 0;
-	m_cursor_pos.Y = m_area_size + 1;
-	SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), m_cursor_pos );
-	std::cout << long_wall;
+	mCursorPos.X = 0;
+	mCursorPos.Y = mAreaSize + 1;
+	SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), mCursorPos );
+	std::cout << longWall;
 
 	// left wall
-	for ( int y = 0; y < m_area_size + 2; y++ )
+	for ( int y = 0; y < mAreaSize + 2; y++ )
 	{
-		m_cursor_pos.X = 0;
-		m_cursor_pos.Y = y;
-		SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), m_cursor_pos );
+		mCursorPos.X = 0;
+		mCursorPos.Y = y;
+		SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), mCursorPos );
 		std::cout << 'X';
 	}
 
 	// right wall
-	for ( int y = 0; y < m_area_size + 2; y++ )
+	for ( int y = 0; y < mAreaSize + 2; y++ )
 	{
-		m_cursor_pos.X = m_area_size + 2;
-		m_cursor_pos.Y = y;
-		SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), m_cursor_pos );
+		mCursorPos.X = mAreaSize + 2;
+		mCursorPos.Y = y;
+		SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), mCursorPos );
 		std::cout << 'X';
 	}
 
-	reset_output_color( );
+	resetOutputColor( );
 }
 
-void c_game_interface::draw_snake( coord_t snake_head, std::vector<coord_t> snake_tail )
+void GameInterface::drawSnake( Coord snakeHead, std::vector<Coord> snakeTail )
 {
-	set_output_color( FG_LIGHTCYAN );
+	setOutputColor( FG_LIGHTCYAN );
 
-	m_cursor_pos.X = snake_head.x + 1;
-	m_cursor_pos.Y = snake_head.y + 1;
-	SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), m_cursor_pos );
+	mCursorPos.X = snakeHead.x + 1;
+	mCursorPos.Y = snakeHead.y + 1;
+	SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), mCursorPos );
 	std::cout << '*';
 
-	set_output_color( FG_CYAN );
+	setOutputColor( FG_CYAN );
 
-	for ( int i = 0; i < snake_tail.size( ); i++ )
+	for ( int i = 0; i < snakeTail.size( ); i++ )
 	{
-		m_cursor_pos.X = snake_tail.at( i ).x + 1;
-		m_cursor_pos.Y = snake_tail.at( i ).y + 1;
-		SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), m_cursor_pos );
+		mCursorPos.X = snakeTail.at( i ).x + 1;
+		mCursorPos.Y = snakeTail.at( i ).y + 1;
+		SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), mCursorPos );
 		std::cout << '*';
 	}
 
-	reset_output_color( );
+	resetOutputColor( );
 }
 
-void c_game_interface::draw_apple( coord_t coord )
+void GameInterface::drawApple( Coord coord )
 {
-	set_output_color( FG_LIGHTGREEN );
+	setOutputColor( FG_LIGHTGREEN );
 
-	m_cursor_pos.X = coord.x + 1;
-	m_cursor_pos.Y = coord.y + 1;
-	SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), m_cursor_pos );
+	mCursorPos.X = coord.x + 1;
+	mCursorPos.Y = coord.y + 1;
+	SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), mCursorPos );
 	std::cout << 'O';
 
-	reset_output_color( );
+	resetOutputColor( );
 }
 
-void c_game_interface::hide_cursor( )
+void GameInterface::hideCursor( )
 {
 	CONSOLE_CURSOR_INFO cursorInfo;
 	GetConsoleCursorInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &cursorInfo );
@@ -93,15 +93,15 @@ void c_game_interface::hide_cursor( )
 	SetConsoleCursorInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &cursorInfo );
 }
 
-void c_game_interface::clear_area( )
+void GameInterface::clearArea( )
 {
-	std::string empty_line( m_area_size, ' ' );
+	std::string emptyLine( mAreaSize, ' ' );
 
-	for ( int y = 1; y < m_area_size + 1; y++ )
+	for ( int y = 1; y < mAreaSize + 1; y++ )
 	{
-		m_cursor_pos.X = 1;
-		m_cursor_pos.Y = y;
-		SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), m_cursor_pos );
-		std::cout << empty_line;
+		mCursorPos.X = 1;
+		mCursorPos.Y = y;
+		SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), mCursorPos );
+		std::cout << emptyLine;
 	}
 }

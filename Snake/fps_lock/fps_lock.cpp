@@ -1,18 +1,18 @@
 #include "fps_lock.h"
 
-void c_fps_lock::wait_next_frame( )
+void FpsLock::waitForNextFrame( )
 {
-	double frame_time = 1000 / m_fps;
+	double frameTime = 1000 / mFps;
 
-	a = std::chrono::system_clock::now( );
-	std::chrono::duration<double, std::milli> work_time = a - b;
+	mPreTime = std::chrono::system_clock::now( );
+	std::chrono::duration<double, std::milli> workTime = mPreTime - mPostTime;
 
-	if ( work_time.count( ) < frame_time )
+	if ( workTime.count( ) < frameTime )
 	{
-		std::chrono::duration<double, std::milli> delta_ms( frame_time - work_time.count( ) );
-		auto delta_ms_duration = std::chrono::duration_cast<std::chrono::milliseconds>(delta_ms);
-		std::this_thread::sleep_for( std::chrono::milliseconds( delta_ms_duration.count( ) ) );
+		std::chrono::duration<double, std::milli> msDelta( frameTime - workTime.count( ) );
+		auto msDeltaDuration = std::chrono::duration_cast<std::chrono::milliseconds>(msDelta);
+		std::this_thread::sleep_for( std::chrono::milliseconds( msDeltaDuration.count( ) ) );
 	}
 
-	b = std::chrono::system_clock::now( );
+	mPostTime = std::chrono::system_clock::now( );
 }

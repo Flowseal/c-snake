@@ -5,7 +5,7 @@
 #include <vector>
 #include "../utils/utils.h"
 
-enum e_fg_color
+enum FgColor
 {
 	FG_BLACK = 0,
 	FG_BLUE = 1,
@@ -25,21 +25,21 @@ enum e_fg_color
 	FG_WHITE = 15
 };
 
-class c_game_interface {
+class GameInterface {
 private:
-	int m_area_size { 20 };
-	COORD m_cursor_pos { 0, 0 };
+	int mAreaSize { 20 };
+	COORD mCursorPos { 0, 0 };
 
 public:
-	void draw_walls( );
-	void draw_snake( coord_t snake_head, std::vector<coord_t> snake_tail );
-	void draw_apple( coord_t coord );
-	void hide_cursor( );
-	void clear_area( );
+	void drawWalls( );
+	void drawSnake( Coord snakeHead, std::vector<Coord> snakeTail );
+	void drawApple( Coord coord );
+	void hideCursor( );
+	void clearArea( );
 
-	c_game_interface( int area_size )
+	GameInterface( int areaSize )
 	{
-		this->m_area_size = area_size;
+		mAreaSize = areaSize;
 	}
 };
 
