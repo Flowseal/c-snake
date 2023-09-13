@@ -27,3 +27,33 @@ void Snake::moveSnake( )
 			mSnakeHead.x -= 1; break;
 	}
 }
+
+MoveDirection Snake::getMoveDirection( )
+{
+	return mMoveDirection; 
+}
+
+void Snake::setMoveDirection( MoveDirection moveDirection ) 
+{ 
+	mMoveDirection = moveDirection;
+}
+
+Coord Snake::getSnakeHead( ) 
+{ 
+	return mSnakeHead; 
+}
+
+void Snake::setSnakeHead( Coord snakeHead ) 
+{ 
+	mSnakeHead = snakeHead; 
+}
+
+std::vector<Coord>& Snake::getSnakeTail( ) 
+{ 
+	return mSnakeTail; 
+}
+
+void Snake::setSnakeTail( std::vector<Coord> snakeTail ) 
+{
+	mSnakeTail = snakeTail; 
+}

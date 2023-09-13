@@ -75,3 +75,23 @@ void GameController::reset( )
 
 	mApple = generateNextAppleCoords( );
 }
+
+Snake& GameController::getSnake( )
+{
+	return mSnake;
+}
+
+Coord GameController::getApple( )
+{
+	return mApple;
+}
+
+PlayerState GameController::getPlayerState( )
+{
+	return mPlayerState;
+}
+
+void GameController::setPlayerState( PlayerState playerState )
+{
+	mPlayerState = playerState;
+}

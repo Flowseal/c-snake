@@ -20,13 +20,13 @@ public:
 	void updateStates( );
 	void reset( );
 
-	Snake& getSnake( ) { return mSnake; };
+	Snake& getSnake( );
 
 	Coord generateNextAppleCoords( );
-	Coord getApple( ) { return mApple; };
+	Coord getApple( );
 
-	PlayerState getPlayerState( ) { return mPlayerState; };
-	void setPlayerState( PlayerState playerState ) { mPlayerState = playerState; };
+	PlayerState getPlayerState( );
+	void setPlayerState( PlayerState playerState );
 
 	GameController( int areaSize )
 	{

@@ -18,14 +18,14 @@ private:
 public:
 	void moveSnake( );
 
-	MoveDirection getMoveDirection( ) { return mMoveDirection; };
-	void setMoveDirection( MoveDirection moveDirection ) { mMoveDirection = moveDirection; };
+	MoveDirection getMoveDirection( );
+	void setMoveDirection( MoveDirection moveDirection );
 
-	Coord getSnakeHead( ) { return mSnakeHead; };
-	void setSnakeHead( Coord snakeHead ) { mSnakeHead = snakeHead; };
+	Coord getSnakeHead( );
+	void setSnakeHead( Coord snakeHead );
 
-	std::vector<Coord>& getSnakeTail( ) { return mSnakeTail; };
-	void setSnakeTail( std::vector<Coord> snakeTail ) { mSnakeTail = snakeTail; };
+	std::vector<Coord>& getSnakeTail( );
+	void setSnakeTail( std::vector<Coord> snakeTail );
 };
 
 #endif
