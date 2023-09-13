@@ -1,5 +1,5 @@
 #ifndef SNAKEGAME_SNAKE_H
-#define SNAKEGAME__H
+#define SNAKEGAME_SNAKE_H
 
 #include <vector>
 #include "../Utils/Utils.h"
