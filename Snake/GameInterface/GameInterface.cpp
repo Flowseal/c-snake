@@ -43,7 +43,7 @@ void GameInterface::drawWalls( )
 	// right wall
 	for ( int y = 0; y < mAreaSize + 2; y++ )
 	{
-		mCursorPos.X = mAreaSize + 2;
+		mCursorPos.X = mAreaSize + 1;
 		mCursorPos.Y = y;
 		SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), mCursorPos );
 		std::cout << 'X';
