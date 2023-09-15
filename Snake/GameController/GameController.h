@@ -11,7 +11,7 @@ enum class PlayerState {
 
 class GameController {
 private:
-	int mAreaSize { 20 };
+	int mAreaSize { 0 };
 	Coord mApple { };
 	Snake mSnake { };
 	PlayerState mPlayerState { PlayerState::ALIVE };
