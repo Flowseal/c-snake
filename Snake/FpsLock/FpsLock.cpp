@@ -2,7 +2,7 @@
 
 void FpsLock::waitForNextFrame( )
 {
-	double frameTime = 1000 / mFps;
+	const double frameTime = 1000 / mFps;
 
 	mPreTime = std::chrono::system_clock::now( );
 	std::chrono::duration<double, std::milli> workTime = mPreTime - mPostTime;

@@ -3,6 +3,8 @@
 
 #include <Windows.h>
 #include <vector>
+
+#include "../GameController/GameController.h"
 #include "../Utils/Utils.h"
 
 enum FgColor
@@ -27,13 +29,14 @@ enum FgColor
 
 class GameInterface {
 private:
-	int mAreaSize { 20 };
-	COORD mCursorPos { 0, 0 };
+	int mAreaSize { 0 };
+	void printPositionedString( Coord coord, std::string string, FgColor fgColor = FG_LIGHTGRAY );
 
 public:
 	void drawWalls( );
 	void drawSnake( Coord snakeHead, std::vector<Coord> snakeTail );
 	void drawApple( Coord coord );
+	void keysProcessing( GameController& gameController );
 	void hideCursor( );
 	void clearArea( );
 
