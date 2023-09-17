@@ -4,35 +4,18 @@
 
 #include "GameInterface.h"
 
-void GameInterface::printPositionedString( Coord coord, std::string string, FgColor fgColor )
+void GameInterface::drawTiles( )
 {
-	if ( fgColor != FG_LIGHTGRAY )
-		SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), fgColor );
+	const sf::Color tileColors[ 2 ] = { sf::Color( 170, 215, 81, 255 ), sf::Color( 162, 209, 73, 255 ) };
 
-	SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), { short( coord.x ), short( coord.y ) } );
-	std::cout << string;
-
-	if ( fgColor != FG_LIGHTGRAY )
-		SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), FG_LIGHTGRAY );
-}
-
-void GameInterface::drawWalls( )
-{
-	const std::string longWall( mAreaSize + 2, 'X' );
-
-	// top wall
-	printPositionedString( { 0, 0 }, longWall, FG_WHITE );
-
-	// bottom wall
-	printPositionedString( { 0, mAreaSize + 1 }, longWall, FG_WHITE );
-
-	// left wall
-	for ( int y = 0; y < mAreaSize + 2; y++ )
-		printPositionedString( { 0, y }, "X", FG_WHITE );
-
-	// right wall
-	for ( int y = 0; y < mAreaSize + 2; y++ )
-		printPositionedString( { mAreaSize + 1, y }, "X", FG_WHITE );
+	for ( int x = 0; x < mAreaSize; x++ )
+		for ( int y = 0; y < mAreaSize; y++ )
+		{
+			sf::RectangleShape tile( sf::Vector2f( TILE_SIZE, TILE_SIZE ) );
+			tile.setFillColor( tileColors[ (x + y) % 2 ] );
+			tile.setPosition( x * TILE_SIZE, y * TILE_SIZE );
+			window.draw( tile );
+		}
 }
 
 void GameInterface::drawSnake( Coord snakeHead, std::vector<Coord> snakeTail )
@@ -71,23 +54,5 @@ void GameInterface::keysProcessing( GameController& gameController )
 			if ( GetKeyState( VK_SPACE ) & 0x8000 )
 				gameController.setPlayerState( PlayerState::ALIVE );
 		}
-	}
-}
-
-void GameInterface::hideCursor( )
-{
-	CONSOLE_CURSOR_INFO cursorInfo;
-	GetConsoleCursorInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &cursorInfo );
-	cursorInfo.bVisible = false;
-	SetConsoleCursorInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &cursorInfo );
-}
-
-void GameInterface::clearArea( )
-{
-	const std::string emptyLine( mAreaSize, ' ' );
-
-	for ( int y = 1; y < mAreaSize + 1; y++ )
-	{
-		printPositionedString( { 1, y }, emptyLine );
 	}
 }

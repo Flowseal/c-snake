@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include <ctime>
 
+#include <SFML/Graphics.hpp>
+
 #include "FpsLock/FpsLock.h"
 #include "GameInterface/GameInterface.h"
 #include "GameController/GameController.h"
@@ -18,11 +20,31 @@ int main( )
 
 	std::thread keyProcessingThread( &GameInterface::keysProcessing, gameInterface, std::ref( gameController ) );
 
-	while ( true )
+	while ( gameInterface.window.isOpen( ) )
 	{
+		sf::Event event;
+		while ( gameInterface.window.pollEvent( event ) )
+		{
+			if ( event.type == sf::Event::Closed )
+				gameInterface.window.close( );
+		}
+
+		gameInterface.window.clear( sf::Color::Black );
+
+		if ( gameController.getPlayerState( ) == PlayerState::ALIVE )
+		{
+			gameInterface.drawTiles( );
+		}
+		else
+		{
+
+		}
+
+		gameInterface.window.display( );
+		fpsLock.waitForNextFrame( );
+
 		system( "cls" );
 		gameInterface.drawWalls( );
-		gameInterface.hideCursor( );
 		gameController.reset( );
 
 		while ( gameController.getPlayerState( ) == PlayerState::ALIVE )
@@ -32,7 +54,6 @@ int main( )
 			gameController.getSnake( ).moveSnake( );
 			gameController.updateStates( );
 
-			gameInterface.clearArea( );
 			gameInterface.drawApple( gameController.getApple( ) );
 			gameInterface.drawSnake( gameController.getSnake( ).getSnakeHead( ), gameController.getSnake( ).getSnakeTail( ) );
 		}
