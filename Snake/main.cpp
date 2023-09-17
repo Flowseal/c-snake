@@ -18,7 +18,7 @@ int main( )
 	GameInterface gameInterface( areaSize );
 	GameController gameController( areaSize );
 
-	std::thread keyProcessingThread( &GameInterface::keysProcessing, gameInterface, std::ref( gameController ) );
+	std::thread keyProcessingThread( &GameInterface::keysProcessing, std::ref(gameInterface), std::ref( gameController ) );
 
 	while ( gameInterface.window.isOpen( ) )
 	{
@@ -26,48 +26,31 @@ int main( )
 		while ( gameInterface.window.pollEvent( event ) )
 		{
 			if ( event.type == sf::Event::Closed )
+			{
 				gameInterface.window.close( );
+				return 0;
+			}
 		}
 
 		gameInterface.window.clear( sf::Color::Black );
 
 		if ( gameController.getPlayerState( ) == PlayerState::ALIVE )
 		{
+			gameController.getSnake( ).moveSnake( );
+			gameController.updateStates( );
+
 			gameInterface.drawTiles( );
+			gameInterface.drawApple( gameController.getApple( ) );
+			gameInterface.drawSnake( gameController.getSnake( ) );
 		}
 		else
 		{
-
+			gameController.reset( );
 		}
 
 		gameInterface.window.display( );
 		fpsLock.waitForNextFrame( );
-
-		system( "cls" );
-		gameInterface.drawWalls( );
-		gameController.reset( );
-
-		while ( gameController.getPlayerState( ) == PlayerState::ALIVE )
-		{
-			fpsLock.waitForNextFrame( );
-
-			gameController.getSnake( ).moveSnake( );
-			gameController.updateStates( );
-
-			gameInterface.drawApple( gameController.getApple( ) );
-			gameInterface.drawSnake( gameController.getSnake( ).getSnakeHead( ), gameController.getSnake( ).getSnakeTail( ) );
-		}
-
-		system( "cls" );
-
-		if ( gameController.getPlayerState( ) == PlayerState::LOSE )
-			std::cout << "You have lost :(" << std::endl << "Press SPACE to try again";
-		else
-			std::cout << "YOU WON!" << std::endl << "Press SPACE to try again";
-
-		while ( gameController.getPlayerState( ) != PlayerState::ALIVE )
-		{
-			std::this_thread::sleep_for( std::chrono::milliseconds( 1 ) );
-		}
 	}
+
+	return 0;
 }

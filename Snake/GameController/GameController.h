@@ -12,9 +12,10 @@ enum class PlayerState {
 class GameController {
 private:
 	int mAreaSize { 0 };
+	float mAnimationCycle { 0.f };
 	Coord mApple { };
 	Snake mSnake { };
-	PlayerState mPlayerState { PlayerState::ALIVE };
+	PlayerState mPlayerState { PlayerState::LOSE };
 
 public:
 	void updateStates( );
