@@ -11,6 +11,7 @@ enum class MoveDirection {
 class Snake {
 private:
 	MoveDirection mMoveDirection { MoveDirection::RIGHT };
+	MoveDirection mNextMoveDirection { MoveDirection::RIGHT };
 
 	Coord mSnakeHead { };
 	std::vector<Coord> mSnakeTail { };
@@ -20,6 +21,7 @@ public:
 
 	MoveDirection getMoveDirection( );
 	void setMoveDirection( MoveDirection moveDirection );
+	void setNextMoveDirection( MoveDirection moveDirection );
 
 	Coord getSnakeHead( );
 	void setSnakeHead( Coord snakeHead );

@@ -70,6 +70,7 @@ void GameController::reset( )
 
 	mSnake = { };
 	mSnake.setMoveDirection( MoveDirection::RIGHT );
+	mSnake.setNextMoveDirection( MoveDirection::RIGHT );
 	mSnake.setSnakeHead( Coord { 3, 1 } );
 	mSnake.setSnakeTail( std::vector<Coord>{ { 2, 1 }, { 1, 1 }} );
 

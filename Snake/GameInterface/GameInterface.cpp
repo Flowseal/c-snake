@@ -105,17 +105,17 @@ void GameInterface::keysProcessing( GameController& gameController )
 	{
 		if ( gameController.getPlayerState( ) == PlayerState::ALIVE )
 		{
-			if ( GetKeyState( VK_UP ) & 0x8000 && gameController.getSnake( ).getMoveDirection( ) != MoveDirection::DOWN )
-				gameController.getSnake( ).setMoveDirection( MoveDirection::UP );
+			if ( GetKeyState( VK_UP ) & 0x8000 )
+				gameController.getSnake( ).setNextMoveDirection( MoveDirection::UP );
 
-			if ( GetKeyState( VK_RIGHT ) & 0x8000 && gameController.getSnake( ).getMoveDirection( ) != MoveDirection::LEFT )
-				gameController.getSnake( ).setMoveDirection( MoveDirection::RIGHT );
+			if ( GetKeyState( VK_RIGHT ) & 0x8000 )
+				gameController.getSnake( ).setNextMoveDirection( MoveDirection::RIGHT );
 
-			if ( GetKeyState( VK_DOWN ) & 0x8000 && gameController.getSnake( ).getMoveDirection( ) != MoveDirection::UP )
-				gameController.getSnake( ).setMoveDirection( MoveDirection::DOWN );
+			if ( GetKeyState( VK_DOWN ) & 0x8000 )
+				gameController.getSnake( ).setNextMoveDirection( MoveDirection::DOWN );
 
-			if ( GetKeyState( VK_LEFT ) & 0x8000 && gameController.getSnake( ).getMoveDirection( ) != MoveDirection::RIGHT )
-				gameController.getSnake( ).setMoveDirection( MoveDirection::LEFT );
+			if ( GetKeyState( VK_LEFT ) & 0x8000 )
+				gameController.getSnake( ).setNextMoveDirection( MoveDirection::LEFT );
 		}
 		else
 		{
