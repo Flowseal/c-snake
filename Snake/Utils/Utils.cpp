@@ -5,6 +5,13 @@ bool operator==( const Coord& lhs, const Coord& rhs )
 	return lhs.x == rhs.x && lhs.y == rhs.y;
 }
 
+Coord operator+=( Coord& lhs, const Coord& rhs )
+{
+	lhs.x += rhs.x;
+	lhs.y += rhs.y;
+	return lhs;
+}
+
 Coord operator+( const Coord& lhs, const Coord& rhs )
 {
 	return Coord( lhs.x + rhs.x, lhs.y + rhs.y );

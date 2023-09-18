@@ -28,6 +28,7 @@ struct Coord {
 };
 
 bool operator==( const Coord& lhs, const Coord& rhs );
+Coord operator+=( Coord& lhs, const Coord& rhs );
 Coord operator+( const Coord& lhs, const Coord& rhs );
 Coord operator-( const Coord& lhs, const Coord& rhs );
 Coord operator*( const Coord& lhs, const float rhs );

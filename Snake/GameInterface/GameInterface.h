@@ -10,8 +10,15 @@
 
 #define TILE_SIZE 32
 
+enum class AnimationCycle {
+	START = 0,
+	IDLE = 1,
+	END = 2
+};
+
 class GameInterface {
 private:
+	float mAnimationCycle { 0.f };
 	int mAreaSize { 0 };
 
 public:
@@ -21,6 +28,10 @@ public:
 	void drawSnake( Snake snake );
 	void drawApple( Coord coord );
 	void keysProcessing( GameController& gameController );
+
+	AnimationCycle getAnimationCycleType( );
+	float getAnimationCycle( );
+	void updateAnimationCycle( float cycleAmount );
 
 	GameInterface( int areaSize )
 	{

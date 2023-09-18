@@ -54,7 +54,7 @@ void GameController::updateStates( )
 	}
 
 	// Self hit
-	for ( int i = 0; i < snakeTail.size( ); i++ )
+	for ( int i = 0; i < snakeTail.size( ) - 1; i++ )
 	{
 		if ( snakeHead == snakeTail.at( i ) )
 		{
@@ -72,7 +72,7 @@ void GameController::reset( )
 	mSnake.setMoveDirection( MoveDirection::RIGHT );
 	mSnake.setNextMoveDirection( MoveDirection::RIGHT );
 	mSnake.setSnakeHead( Coord { 3, 1 } );
-	mSnake.setSnakeTail( std::vector<Coord>{ { 2, 1 }, { 1, 1 }} );
+	mSnake.setSnakeTail( std::vector<Coord>{ { 2, 1 }, { 1, 1 }, { 0, 1 } } );
 
 	mApple = generateNextAppleCoords( );
 }

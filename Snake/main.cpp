@@ -10,8 +10,8 @@
 
 int main( )
 {
-	const int areaSize = 10;
-	const int fps = 4;
+	const int areaSize = 15;
+	const int fps = 100;
 	srand( (unsigned int)time( NULL ) );
 
 	FpsLock fpsLock( fps );
@@ -36,8 +36,11 @@ int main( )
 
 		if ( gameController.getPlayerState( ) == PlayerState::ALIVE )
 		{
-			gameController.getSnake( ).moveSnake( );
-			gameController.updateStates( );
+			if ( gameInterface.getAnimationCycleType( ) == AnimationCycle::START )
+				gameController.getSnake( ).moveSnake( );
+
+			if ( gameInterface.getAnimationCycleType( ) == AnimationCycle::END )
+				gameController.updateStates( );
 
 			gameInterface.drawTiles( );
 			gameInterface.drawApple( gameController.getApple( ) );
@@ -49,6 +52,7 @@ int main( )
 		}
 
 		gameInterface.window.display( );
+		gameInterface.updateAnimationCycle( 10.f / fps );
 		fpsLock.waitForNextFrame( );
 	}
 

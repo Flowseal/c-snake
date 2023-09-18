@@ -1,5 +1,12 @@
 #include "Snake.h"
 
+std::map <MoveDirection, MoveDirection> OPPOSITE_DIRECTIONS = {
+	{ MoveDirection::UP, MoveDirection::DOWN },
+	{ MoveDirection::DOWN, MoveDirection::UP },
+	{ MoveDirection::LEFT, MoveDirection::RIGHT },
+	{ MoveDirection::RIGHT, MoveDirection::LEFT },
+};
+
 void Snake::moveSnake( )
 {
 	// Update move direction
@@ -17,17 +24,17 @@ void Snake::moveSnake( )
 	// Move snake's head
 	switch ( mMoveDirection )
 	{
-		case MoveDirection::UP:
-			mSnakeHead.y -= 1; break;
+	case MoveDirection::UP:
+		mSnakeHead.y -= 1; break;
 
-		case MoveDirection::RIGHT:
-			mSnakeHead.x += 1; break;
+	case MoveDirection::RIGHT:
+		mSnakeHead.x += 1; break;
 
-		case MoveDirection::DOWN:
-			mSnakeHead.y += 1; break;
+	case MoveDirection::DOWN:
+		mSnakeHead.y += 1; break;
 
-		case MoveDirection::LEFT:
-			mSnakeHead.x -= 1; break;
+	case MoveDirection::LEFT:
+		mSnakeHead.x -= 1; break;
 	}
 }
 
@@ -58,22 +65,18 @@ MoveDirection Snake::getMoveDirection( )
 
 void Snake::setMoveDirection( MoveDirection moveDirection )
 {
-	if ( moveDirection == MoveDirection::UP && mMoveDirection == MoveDirection::DOWN )
-		return;
-
-	if ( moveDirection == MoveDirection::DOWN && mMoveDirection == MoveDirection::UP )
-		return;
-
-	if ( moveDirection == MoveDirection::LEFT && mMoveDirection == MoveDirection::RIGHT )
-		return;
-
-	if ( moveDirection == MoveDirection::RIGHT && mMoveDirection == MoveDirection::LEFT )
+	if ( OPPOSITE_DIRECTIONS.find( mMoveDirection )->second == moveDirection )
 		return;
 
 	mMoveDirection = moveDirection;
 }
 
-void Snake::setNextMoveDirection( MoveDirection moveDirection)
+MoveDirection Snake::getNextMoveDirection( )
+{
+	return mNextMoveDirection;
+}
+
+void Snake::setNextMoveDirection( MoveDirection moveDirection )
 {
 	mNextMoveDirection = moveDirection;
 }

@@ -8,6 +8,8 @@ enum class MoveDirection {
 	UP, RIGHT, DOWN, LEFT
 };
 
+extern std::map <MoveDirection, MoveDirection> OPPOSITE_DIRECTIONS;
+
 class Snake {
 private:
 	MoveDirection mMoveDirection { MoveDirection::RIGHT };
@@ -21,6 +23,8 @@ public:
 
 	MoveDirection getMoveDirection( );
 	void setMoveDirection( MoveDirection moveDirection );
+
+	MoveDirection getNextMoveDirection( );
 	void setNextMoveDirection( MoveDirection moveDirection );
 
 	Coord getSnakeHead( );

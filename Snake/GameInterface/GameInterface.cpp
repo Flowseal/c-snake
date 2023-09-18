@@ -44,12 +44,6 @@ void GameInterface::drawSnake( Snake snake )
 	Coord prevSnakeTail = snakeTail.at( snakeTail.size( ) - 1 );
 	int prevDirection = 0;
 
-	// Draw rounded Snake's end
-	sf::CircleShape snakeRoundedEnd( TILE_SIZE / 4, 30 );
-	snakeRoundedEnd.setFillColor( SNAKE_LAST_TAIL_COLOR );
-	snakeRoundedEnd.setPosition( sf::Vector2f( prevSnakeTail.x * TILE_SIZE + TILE_SIZE / 4, prevSnakeTail.y * TILE_SIZE + TILE_SIZE / 4 ) );
-	window.draw( snakeRoundedEnd );
-
 	// Draw Snake's tail
 	for ( int i = static_cast<int>(snakeTail.size( )) - 2; i >= 0; i-- )
 	{
@@ -57,6 +51,23 @@ void GameInterface::drawSnake( Snake snake )
 
 		Coord prevSnakeTailCenter = prevSnakeTail * TILE_SIZE + (TILE_SIZE / 2);
 		Coord currSnakeTailCenter = currSnakeTail * TILE_SIZE + (TILE_SIZE / 2);
+
+		if ( i == 0 )
+		{
+			currSnakeTailCenter = prevSnakeTailCenter + (currSnakeTailCenter - prevSnakeTailCenter) * getAnimationCycle();
+		}
+		
+		else if ( i == static_cast<int>(snakeTail.size( )) - 2 )
+		{
+			prevSnakeTailCenter = prevSnakeTailCenter + (currSnakeTailCenter - prevSnakeTailCenter) * getAnimationCycle( );
+
+			//Draw rounded Snake's end
+			sf::CircleShape snakeRoundedEnd( TILE_SIZE / 4, 30 );
+			snakeRoundedEnd.setFillColor( SNAKE_LAST_TAIL_COLOR );
+			snakeRoundedEnd.setPosition( sf::Vector2f( prevSnakeTailCenter.x - TILE_SIZE / 4, prevSnakeTailCenter.y - TILE_SIZE / 4 ) );
+			window.draw( snakeRoundedEnd );
+		}
+		
 
 		int widthDelta = abs( currSnakeTail.x - prevSnakeTail.x ) * (TILE_SIZE / 4);
 		int heightDelta = abs( currSnakeTail.y - prevSnakeTail.y ) * (TILE_SIZE / 4);
@@ -70,25 +81,27 @@ void GameInterface::drawSnake( Snake snake )
 			window.draw( edgeCircle );
 		}
 
-		sf::ConvexShape convex;
-		convex.setFillColor( colorBlend( SNAKE_FIRST_TAIL_COLOR, SNAKE_LAST_TAIL_COLOR, static_cast<float>(i + 2) / snakeTail.size( ) ) );
-		convex.setPointCount( 4 );
-		convex.setPoint( 0, sf::Vector2f( prevSnakeTailCenter.x - heightDelta, prevSnakeTailCenter.y - widthDelta ) );
-		convex.setPoint( 1, sf::Vector2f( prevSnakeTailCenter.x + heightDelta, prevSnakeTailCenter.y + widthDelta ) );
-		convex.setPoint( 2, sf::Vector2f( currSnakeTailCenter.x + heightDelta, currSnakeTailCenter.y + widthDelta ) );
-		convex.setPoint( 3, sf::Vector2f( currSnakeTailCenter.x - heightDelta, currSnakeTailCenter.y - widthDelta ) );
+		sf::ConvexShape snakePath;
+		snakePath.setFillColor( colorBlend( SNAKE_FIRST_TAIL_COLOR, SNAKE_LAST_TAIL_COLOR, static_cast<float>(i + 2) / snakeTail.size( ) ) );
+		snakePath.setPointCount( 4 );
+		snakePath.setPoint( 0, sf::Vector2f( prevSnakeTailCenter.x - heightDelta, prevSnakeTailCenter.y - widthDelta ) );
+		snakePath.setPoint( 1, sf::Vector2f( prevSnakeTailCenter.x + heightDelta, prevSnakeTailCenter.y + widthDelta ) );
+		snakePath.setPoint( 2, sf::Vector2f( currSnakeTailCenter.x + heightDelta, currSnakeTailCenter.y + widthDelta ) );
+		snakePath.setPoint( 3, sf::Vector2f( currSnakeTailCenter.x - heightDelta, currSnakeTailCenter.y - widthDelta ) );
+		window.draw( snakePath );
 
-		window.draw( convex );
+		// Draw Snake's head
+		if ( i == 0 )
+		{
+			sf::CircleShape snakeHead( TILE_SIZE / 2, 60 );
+			snakeHead.setFillColor( SNAKE_HEAD_COLOR );
+			snakeHead.setPosition( sf::Vector2f( currSnakeTailCenter.x - TILE_SIZE / 2, currSnakeTailCenter.y - TILE_SIZE / 2 ) );
+			window.draw( snakeHead );
+		}
 
 		prevSnakeTail = currSnakeTail;
 		prevDirection = widthDelta - heightDelta;
 	}
-
-	// Draw Snake's head
-	sf::CircleShape snakeHead( TILE_SIZE / 2, 60 );
-	snakeHead.setFillColor( SNAKE_HEAD_COLOR );
-	snakeHead.setPosition( snake.getSnakeHead( ) * TILE_SIZE );
-	window.draw( snakeHead );
 }
 
 void GameInterface::drawApple( Coord coord )
@@ -123,4 +136,34 @@ void GameInterface::keysProcessing( GameController& gameController )
 				gameController.setPlayerState( PlayerState::ALIVE );
 		}
 	}
+}
+
+AnimationCycle GameInterface::getAnimationCycleType( )
+{
+	if ( mAnimationCycle == 0.f )
+		return AnimationCycle::START;
+
+	if ( mAnimationCycle == 1.f )
+		return AnimationCycle::END;
+
+	return AnimationCycle::IDLE;
+}
+
+float GameInterface::getAnimationCycle( )
+{
+	return mAnimationCycle;
+}
+
+void GameInterface::updateAnimationCycle( float cycleAmount )
+{
+	if ( mAnimationCycle == 1.f )
+	{
+		mAnimationCycle = 0.f;
+		return;
+	}
+
+	mAnimationCycle += cycleAmount;
+
+	if ( mAnimationCycle > 1.f )
+		mAnimationCycle = 1.f;
 }
