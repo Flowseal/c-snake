@@ -49,7 +49,7 @@ void GameController::updateStates( )
 	if ( snakeHead.x < 0 || snakeHead.y < 0
 		|| snakeHead.x >= mAreaSize || snakeHead.y >= mAreaSize )
 	{
-		mPlayerState = PlayerState::LOSE;
+		mPlayerState = PlayerState::DIE;
 		return;
 	}
 
@@ -58,7 +58,7 @@ void GameController::updateStates( )
 	{
 		if ( snakeHead == snakeTail.at( i ) )
 		{
-			mPlayerState = PlayerState::LOSE;
+			mPlayerState = PlayerState::DIE;
 			return;
 		}
 	}
