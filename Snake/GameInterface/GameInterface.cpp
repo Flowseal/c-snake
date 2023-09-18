@@ -20,6 +20,15 @@ sf::Color colorBlend( sf::Color firstCol, sf::Color secondCol, float percentage 
 	return sf::Color( r, g, b, 255 );
 }
 
+
+void GameInterface::drawCircle( float radius, sf::Vector2f position, sf::Color color )
+{
+	sf::CircleShape circle( radius, 60 );
+	circle.setPosition( position );
+	circle.setFillColor( color );
+	window.draw( circle );
+}
+
 void GameInterface::drawTiles( )
 {
 	const sf::Color tileColors[ 2 ] = { LIGHT_TILE_COLOR, DARK_TILE_COLOR };
@@ -36,71 +45,77 @@ void GameInterface::drawTiles( )
 
 void GameInterface::drawSnake( Snake snake )
 {
-	// Push head to the tail's array to connect first tail part with the head
-	std::vector<Coord> snakeTail = snake.getSnakeTail( );
-	snakeTail.insert( snakeTail.begin( ), snake.getSnakeHead( ) );
+	// Push head to the tail's array since we will render all the snake in one loop
+	std::vector<Coord> fullSnake = snake.getSnakeTail( );
+	fullSnake.insert( fullSnake.begin( ), snake.getSnakeHead( ) );
+	int fullSnakeSize = static_cast<int>(fullSnake.size( ));
 
-	// Track previous data to connect with next tail's part
-	Coord prevSnakeTail = snakeTail.at( snakeTail.size( ) - 1 );
+	// Track previous data to connect with the next snake's part
+	Coord prevSnakePart = fullSnake.at( fullSnake.size( ) - 1 );
 	int prevDirection = 0;
 
-	// Draw Snake's tail
-	for ( int i = static_cast<int>(snakeTail.size( )) - 2; i >= 0; i-- )
+	for ( int i = fullSnakeSize - 2; i >= 0; i-- )
 	{
-		Coord currSnakeTail = snakeTail.at( i );
+		Coord currSnakePart = fullSnake.at( i );
 
-		Coord prevSnakeTailCenter = prevSnakeTail * TILE_SIZE + (TILE_SIZE / 2);
-		Coord currSnakeTailCenter = currSnakeTail * TILE_SIZE + (TILE_SIZE / 2);
+		Coord prevSnakePartScreen = prevSnakePart * TILE_SIZE + (TILE_SIZE / 2);
+		Coord currSnakePartScreen = currSnakePart * TILE_SIZE + (TILE_SIZE / 2);
 
+		// Adjust screen positions of first and last snake parts for animation
 		if ( i == 0 )
 		{
-			currSnakeTailCenter = prevSnakeTailCenter + (currSnakeTailCenter - prevSnakeTailCenter) * getAnimationCycle();
+			currSnakePartScreen = prevSnakePartScreen + (currSnakePartScreen - prevSnakePartScreen) * getAnimationCycle( );
 		}
-		
-		else if ( i == static_cast<int>(snakeTail.size( )) - 2 )
+		else if ( i == fullSnakeSize - 2 )
 		{
-			prevSnakeTailCenter = prevSnakeTailCenter + (currSnakeTailCenter - prevSnakeTailCenter) * getAnimationCycle( );
-
-			//Draw rounded Snake's end
-			sf::CircleShape snakeRoundedEnd( TILE_SIZE / 4, 30 );
-			snakeRoundedEnd.setFillColor( SNAKE_LAST_TAIL_COLOR );
-			snakeRoundedEnd.setPosition( sf::Vector2f( prevSnakeTailCenter.x - TILE_SIZE / 4, prevSnakeTailCenter.y - TILE_SIZE / 4 ) );
-			window.draw( snakeRoundedEnd );
+			prevSnakePartScreen = prevSnakePartScreen + (currSnakePartScreen - prevSnakePartScreen) * getAnimationCycle( );
 		}
-		
 
-		int widthDelta = abs( currSnakeTail.x - prevSnakeTail.x ) * (TILE_SIZE / 4);
-		int heightDelta = abs( currSnakeTail.y - prevSnakeTail.y ) * (TILE_SIZE / 4);
-
-		// If snake have changed a direction, we need to smooth out the angle
-		if ( prevDirection != 0 && (widthDelta - heightDelta) != prevDirection )
-		{
-			sf::CircleShape edgeCircle( TILE_SIZE / 4, 30 );
-			edgeCircle.setFillColor( colorBlend( SNAKE_FIRST_TAIL_COLOR, SNAKE_LAST_TAIL_COLOR, static_cast<float>(i + 2) / snakeTail.size( ) ) );
-			edgeCircle.setPosition( sf::Vector2f( prevSnakeTailCenter.x - TILE_SIZE / 4, prevSnakeTailCenter.y - TILE_SIZE / 4 ) );
-			window.draw( edgeCircle );
-		}
+		int convexWidth = abs( currSnakePart.x - prevSnakePart.x ) * (TILE_SIZE / 4);
+		int convexHeight = abs( currSnakePart.y - prevSnakePart.y ) * (TILE_SIZE / 4);
+		bool snakeChangedDirection = prevDirection != 0 && (convexWidth - convexHeight) != prevDirection;
 
 		sf::ConvexShape snakePath;
-		snakePath.setFillColor( colorBlend( SNAKE_FIRST_TAIL_COLOR, SNAKE_LAST_TAIL_COLOR, static_cast<float>(i + 2) / snakeTail.size( ) ) );
 		snakePath.setPointCount( 4 );
-		snakePath.setPoint( 0, sf::Vector2f( prevSnakeTailCenter.x - heightDelta, prevSnakeTailCenter.y - widthDelta ) );
-		snakePath.setPoint( 1, sf::Vector2f( prevSnakeTailCenter.x + heightDelta, prevSnakeTailCenter.y + widthDelta ) );
-		snakePath.setPoint( 2, sf::Vector2f( currSnakeTailCenter.x + heightDelta, currSnakeTailCenter.y + widthDelta ) );
-		snakePath.setPoint( 3, sf::Vector2f( currSnakeTailCenter.x - heightDelta, currSnakeTailCenter.y - widthDelta ) );
+		snakePath.setPoint( 0, sf::Vector2f( prevSnakePartScreen.x - convexHeight, prevSnakePartScreen.y - convexWidth ) );
+		snakePath.setPoint( 1, sf::Vector2f( prevSnakePartScreen.x + convexHeight, prevSnakePartScreen.y + convexWidth ) );
+		snakePath.setPoint( 2, sf::Vector2f( currSnakePartScreen.x + convexHeight, currSnakePartScreen.y + convexWidth ) );
+		snakePath.setPoint( 3, sf::Vector2f( currSnakePartScreen.x - convexHeight, currSnakePartScreen.y - convexWidth ) );
+		snakePath.setFillColor( colorBlend( SNAKE_FIRST_TAIL_COLOR, SNAKE_LAST_TAIL_COLOR, (i + 2.f) / fullSnakeSize ) );
 		window.draw( snakePath );
+
+		// If snake have changed a direction, we need to smooth out the angle
+		if ( snakeChangedDirection )
+		{
+			drawCircle(
+				TILE_SIZE / 4,
+				sf::Vector2f( prevSnakePartScreen ) - sf::Vector2f( TILE_SIZE / 4, TILE_SIZE / 4 ),
+				colorBlend( SNAKE_FIRST_TAIL_COLOR, SNAKE_LAST_TAIL_COLOR, (i + 2.f) / fullSnakeSize )
+			);
+		}
 
 		// Draw Snake's head
 		if ( i == 0 )
 		{
-			sf::CircleShape snakeHead( TILE_SIZE / 2, 60 );
-			snakeHead.setFillColor( SNAKE_HEAD_COLOR );
-			snakeHead.setPosition( sf::Vector2f( currSnakeTailCenter.x - TILE_SIZE / 2, currSnakeTailCenter.y - TILE_SIZE / 2 ) );
-			window.draw( snakeHead );
+			drawCircle(
+				TILE_SIZE / 2,
+				sf::Vector2f( currSnakePartScreen ) - sf::Vector2f( TILE_SIZE / 2, TILE_SIZE / 2 ),
+				SNAKE_HEAD_COLOR
+			);
 		}
 
-		prevSnakeTail = currSnakeTail;
-		prevDirection = widthDelta - heightDelta;
+		// Draw rounded Snake's end
+		else if ( i == fullSnakeSize - 2 )
+		{
+			drawCircle(
+				TILE_SIZE / 4,
+				sf::Vector2f( prevSnakePartScreen ) - sf::Vector2f( TILE_SIZE / 4, TILE_SIZE / 4 ),
+				SNAKE_LAST_TAIL_COLOR
+			);
+		}
+
+		prevSnakePart = currSnakePart;
+		prevDirection = convexWidth - convexHeight;
 	}
 }
 
@@ -138,6 +153,11 @@ void GameInterface::keysProcessing( GameController& gameController )
 	}
 }
 
+float GameInterface::getAnimationCycle( )
+{
+	return mAnimationCycle;
+}
+
 AnimationCycle GameInterface::getAnimationCycleType( )
 {
 	if ( mAnimationCycle == 0.f )
@@ -147,11 +167,6 @@ AnimationCycle GameInterface::getAnimationCycleType( )
 		return AnimationCycle::END;
 
 	return AnimationCycle::IDLE;
-}
-
-float GameInterface::getAnimationCycle( )
-{
-	return mAnimationCycle;
 }
 
 void GameInterface::updateAnimationCycle( float cycleAmount )

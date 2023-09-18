@@ -21,6 +21,8 @@ private:
 	float mAnimationCycle { 0.f };
 	int mAreaSize { 0 };
 
+	void drawCircle( float radius, sf::Vector2f position, sf::Color color );
+
 public:
 	sf::RenderWindow window;
 	
