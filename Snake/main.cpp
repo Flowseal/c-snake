@@ -10,7 +10,7 @@
 
 int main( )
 {
-	const int areaSize = 15;
+	const int areaSize = 10;
 	const int fps = 100;
 	srand( (unsigned int)time( NULL ) );
 
@@ -18,6 +18,7 @@ int main( )
 	GameInterface gameInterface( areaSize );
 	GameController gameController( areaSize );
 
+	gameInterface.createTextures( );
 	std::thread keyProcessingThread( &GameInterface::keysProcessing, std::ref(gameInterface), std::ref( gameController ) );
 
 	while ( gameInterface.window.isOpen( ) )

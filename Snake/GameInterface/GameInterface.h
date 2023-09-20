@@ -8,7 +8,7 @@
 #include "../GameController/GameController.h"
 #include "../Utils/Utils.h"
 
-#define TILE_SIZE 32
+#define TILE_SIZE 64
 
 enum class AnimationCycle {
 	START = 0,
@@ -21,11 +21,15 @@ private:
 	float mAnimationCycle { 0.f };
 	int mAreaSize { 0 };
 
+	sf::Texture mAppleTexture;
+
 	void drawCircle( float radius, sf::Vector2f position, sf::Color color );
 
 public:
 	sf::RenderWindow window;
 	
+	void createTextures( );
+
 	void drawTiles( );
 	void drawSnake( Snake snake );
 	void drawApple( Coord coord );

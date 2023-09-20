@@ -3,6 +3,8 @@
 
 #define NOMINMAX
 #include <Windows.h>
+
+#include "../resource.h"
 #include "GameInterface.h"
 
 sf::Color DARK_TILE_COLOR = sf::Color( 162, 209, 73, 255 );
@@ -20,6 +22,21 @@ sf::Color colorBlend( sf::Color firstCol, sf::Color secondCol, float percentage 
 	return sf::Color( r, g, b, 255 );
 }
 
+void GameInterface::createTextures( )
+{
+	HMODULE hModule = GetModuleHandle( NULL );
+
+	HRSRC hResource = FindResource( hModule, MAKEINTRESOURCE( IDB_PNG2 ), L"PNG" );
+	HGLOBAL hMemory = LoadResource( hModule, hResource );
+	DWORD dwSize = SizeofResource( hModule, hResource );
+	LPVOID lpAddress = LockResource( hMemory );
+
+	char* bytes = new char[ dwSize ];
+	memcpy( bytes, lpAddress, dwSize );
+
+	mAppleTexture.loadFromMemory( bytes, dwSize );
+	mAppleTexture.setSmooth( true );
+}
 
 void GameInterface::drawCircle( float radius, sf::Vector2f position, sf::Color color )
 {
@@ -121,10 +138,14 @@ void GameInterface::drawSnake( Snake snake )
 
 void GameInterface::drawApple( Coord coord )
 {
-	sf::CircleShape apple( TILE_SIZE / 2 );
-	apple.setFillColor( sf::Color( 231, 71, 29, 255 ) );
-	apple.setPosition( sf::Vector2f( coord.x * TILE_SIZE, coord.y * TILE_SIZE ) );
-	window.draw( apple );
+	float scaleX = float( TILE_SIZE ) / float( mAppleTexture.getSize( ).x );
+	float scaleY = float( TILE_SIZE ) / float( mAppleTexture.getSize( ).y );
+
+	sf::Sprite appleSprite;
+	appleSprite.setTexture( mAppleTexture );
+	appleSprite.setScale( sf::Vector2f( scaleX, scaleY ) );
+	appleSprite.setPosition( sf::Vector2f( coord.x * TILE_SIZE, coord.y * TILE_SIZE ) );
+	window.draw( appleSprite );
 }
 
 void GameInterface::keysProcessing( GameController& gameController )

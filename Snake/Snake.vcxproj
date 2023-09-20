@@ -149,8 +149,16 @@
     <ClInclude Include="FpsLock\FpsLock.h" />
     <ClInclude Include="GameInterface\GameInterface.h" />
     <ClInclude Include="GameController\GameController.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Snake\Snake.h" />
     <ClInclude Include="Utils\Utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SnakeGame.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\apple32.png" />
+    <Image Include="..\Resources\apple128.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
