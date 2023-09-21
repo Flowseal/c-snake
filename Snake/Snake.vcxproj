@@ -139,6 +139,9 @@
       <AdditionalLibraryDirectories>$(SolutionDir)SFML-2.6.0\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;opengl32.lib;freetype.lib;winmm.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)Resources;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FpsLock\FpsLock.cpp" />
@@ -161,6 +164,10 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\apple128.png" />
+    <Image Include="..\Resources\trophey128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="..\Resources\Montserrat-Regular.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

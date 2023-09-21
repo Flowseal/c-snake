@@ -33,6 +33,7 @@ void GameController::updateStates( )
 	if ( snakeHead == mApple )
 	{
 		snakeTail.push_back( snakeTail.at( snakeTail.size( ) - 1 ) );
+		score += 1;
 
 		if ( snakeTail.size( ) + 1 != mAreaSize * mAreaSize )
 		{
@@ -66,6 +67,8 @@ void GameController::updateStates( )
 
 void GameController::reset( )
 {
+	highestScore = fmax( score, highestScore );
+	score = 0;
 	mPlayerState = PlayerState::ALIVE;
 
 	mSnake = { };

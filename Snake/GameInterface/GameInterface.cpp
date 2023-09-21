@@ -1,17 +1,15 @@
 ﻿#include <iostream>
 #include <string>
 
-#define NOMINMAX
-#include <Windows.h>
-
 #include "../resource.h"
 #include "GameInterface.h"
 
-sf::Color DARK_TILE_COLOR = sf::Color( 162, 209, 73, 255 );
-sf::Color LIGHT_TILE_COLOR = sf::Color( 170, 215, 81, 255 );
-sf::Color SNAKE_HEAD_COLOR = sf::Color( 83, 130, 255, 255 );
-sf::Color SNAKE_FIRST_TAIL_COLOR = sf::Color( 75, 124, 246, 255 );
-sf::Color SNAKE_LAST_TAIL_COLOR = sf::Color( 33, 78, 176, 255 );
+const sf::Color BACKGROUND_COLOR = sf::Color( 74, 117, 44, 255 );
+const sf::Color DARK_TILE_COLOR = sf::Color( 162, 209, 73, 255 );
+const sf::Color LIGHT_TILE_COLOR = sf::Color( 170, 215, 81, 255 );
+const sf::Color SNAKE_HEAD_COLOR = sf::Color( 83, 130, 255, 255 );
+const sf::Color SNAKE_FIRST_TAIL_COLOR = sf::Color( 75, 124, 246, 255 );
+const sf::Color SNAKE_LAST_TAIL_COLOR = sf::Color( 33, 78, 176, 255 );
 
 sf::Color colorBlend( sf::Color firstCol, sf::Color secondCol, float percentage )
 {
@@ -22,31 +20,44 @@ sf::Color colorBlend( sf::Color firstCol, sf::Color secondCol, float percentage 
 	return sf::Color( r, g, b, 255 );
 }
 
-void GameInterface::createTextures( )
+void GameInterface::renderFrame( GameController gameController )
 {
-	HMODULE hModule = GetModuleHandle( NULL );
+	// Playarea
+	renderTiles( );
+	drawSprite( mAppleTexture, gameController.getApple( ) );
+	renderSnake( gameController.getSnake( ) );
 
-	HRSRC hResource = FindResource( hModule, MAKEINTRESOURCE( IDB_PNG2 ), L"PNG" );
-	HGLOBAL hMemory = LoadResource( hModule, hResource );
-	DWORD dwSize = SizeofResource( hModule, hResource );
-	LPVOID lpAddress = LockResource( hMemory );
-
-	char* bytes = new char[ dwSize ];
-	memcpy( bytes, lpAddress, dwSize );
-
-	mAppleTexture.loadFromMemory( bytes, dwSize );
-	mAppleTexture.setSmooth( true );
+	// Scores
+	renderInfobar( gameController.score, gameController.highestScore );
 }
 
-void GameInterface::drawCircle( float radius, sf::Vector2f position, sf::Color color )
+void GameInterface::renderInfobar( int score, int highestScore )
 {
-	sf::CircleShape circle( radius, 60 );
-	circle.setPosition( position );
-	circle.setFillColor( color );
-	window.draw( circle );
+	// Background
+	sf::RectangleShape background( sf::Vector2f( TILE_SIZE * 2, TILE_SIZE * mAreaSize ) );
+	background.setFillColor( BACKGROUND_COLOR );
+	background.setPosition( sf::Vector2f( TILE_SIZE * mAreaSize, 0 ) );
+	window.draw( background );
+
+	sf::Text scoreText;
+	scoreText.setFont( mMontserratFont );
+	scoreText.setFillColor( sf::Color::White );
+	scoreText.setCharacterSize( TILE_SIZE - 5 );
+
+	// Current score
+	drawSprite( mAppleTexture, Coord( mAreaSize + 0, 0 ) );
+	scoreText.setString( std::to_string( score ) );
+	scoreText.setPosition( Coord( mAreaSize + 1, 0 ) * TILE_SIZE );
+	window.draw( scoreText );
+
+	// Highest score
+	drawSprite( mTropheyTexture, Coord( mAreaSize + 0, 1 ) );
+	scoreText.setString( std::to_string( highestScore ) );
+	scoreText.setPosition( Coord( mAreaSize + 1, 1 ) * TILE_SIZE );
+	window.draw( scoreText );
 }
 
-void GameInterface::drawTiles( )
+void GameInterface::renderTiles( )
 {
 	const sf::Color tileColors[ 2 ] = { LIGHT_TILE_COLOR, DARK_TILE_COLOR };
 
@@ -60,7 +71,7 @@ void GameInterface::drawTiles( )
 		}
 }
 
-void GameInterface::drawSnake( Snake snake )
+void GameInterface::renderSnake( Snake snake )
 {
 	// Push head to the tail's array since we will render all the snake in one loop
 	std::vector<Coord> fullSnake = snake.getSnakeTail( );
@@ -136,16 +147,55 @@ void GameInterface::drawSnake( Snake snake )
 	}
 }
 
-void GameInterface::drawApple( Coord coord )
+void GameInterface::drawCircle( float radius, sf::Vector2f position, sf::Color color )
 {
-	float scaleX = float( TILE_SIZE ) / float( mAppleTexture.getSize( ).x );
-	float scaleY = float( TILE_SIZE ) / float( mAppleTexture.getSize( ).y );
+	sf::CircleShape circle( radius, 60 );
+	circle.setPosition( position );
+	circle.setFillColor( color );
+	window.draw( circle );
+}
 
-	sf::Sprite appleSprite;
-	appleSprite.setTexture( mAppleTexture );
-	appleSprite.setScale( sf::Vector2f( scaleX, scaleY ) );
-	appleSprite.setPosition( sf::Vector2f( coord.x * TILE_SIZE, coord.y * TILE_SIZE ) );
-	window.draw( appleSprite );
+void GameInterface::drawSprite( sf::Texture texture, Coord coord )
+{
+	float scaleX = float( TILE_SIZE ) / float( texture.getSize( ).x );
+	float scaleY = float( TILE_SIZE ) / float( texture.getSize( ).y );
+
+	sf::Sprite sprite;
+	sprite.setTexture( texture );
+	sprite.setScale( sf::Vector2f( scaleX, scaleY ) );
+	sprite.setPosition( sf::Vector2f( coord.x * TILE_SIZE, coord.y * TILE_SIZE ) );
+	window.draw( sprite );
+}
+
+ResourceFile GameInterface::resourceToBytes( LPCWSTR lpName, LPCWSTR lpType )
+{
+	HMODULE hModule = GetModuleHandle( NULL );
+	HRSRC hResource = FindResource( hModule, lpName, lpType );
+	HGLOBAL hMemory = LoadResource( hModule, hResource );
+	DWORD dwSize = SizeofResource( hModule, hResource );
+	LPVOID lpAddress = LockResource( hMemory );
+
+	ResourceFile resourceFile;
+	resourceFile.bytes = new char[ dwSize ];
+	resourceFile.dwSize = dwSize;
+	memcpy( resourceFile.bytes, lpAddress, resourceFile.dwSize );
+
+	return resourceFile;
+}
+
+void GameInterface::createResources( )
+{
+	ResourceFile tropheyImage = resourceToBytes( MAKEINTRESOURCE( IDB_PNG1 ), L"PNG" );
+	mTropheyTexture.loadFromMemory( tropheyImage.bytes, tropheyImage.dwSize );
+	mTropheyTexture.setSmooth( true );
+
+	ResourceFile appleImage = resourceToBytes( MAKEINTRESOURCE( IDB_PNG2 ), L"PNG" );
+	mAppleTexture.loadFromMemory( appleImage.bytes, appleImage.dwSize );
+	mAppleTexture.setSmooth( true );
+
+	ResourceFile montserratFont = resourceToBytes( MAKEINTRESOURCE( IDR_TTF1 ), L"TTF" );
+	mMontserratFont.loadFromMemory( montserratFont.bytes, montserratFont.dwSize );
+	mMontserratFont.setSmooth( true );
 }
 
 void GameInterface::keysProcessing( GameController& gameController )

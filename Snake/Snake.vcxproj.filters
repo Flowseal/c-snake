@@ -63,5 +63,13 @@
     <Image Include="..\Resources\apple128.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\Resources\trophey128.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="..\Resources\Montserrat-Regular.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
   </ItemGroup>
 </Project>

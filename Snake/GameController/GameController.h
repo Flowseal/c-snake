@@ -18,6 +18,9 @@ private:
 	PlayerState mPlayerState { PlayerState::DIE };
 
 public:
+	int score { 0 };
+	int highestScore { 0 };
+
 	void updateStates( );
 	void reset( );
 

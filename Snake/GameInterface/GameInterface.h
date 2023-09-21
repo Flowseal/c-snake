@@ -1,6 +1,8 @@
 #ifndef SNAKEGAME_INTERFACE_H
 #define SNAKEGAME_INTERFACE_H
 
+#define NOMINMAX
+#include <Windows.h>
 #include <vector>
 
 #include <SFML/Graphics.hpp>
@@ -16,24 +18,34 @@ enum class AnimationCycle {
 	END = 2
 };
 
+struct ResourceFile {
+	char* bytes;
+	int dwSize;
+};
+
 class GameInterface {
 private:
 	float mAnimationCycle { 0.f };
 	int mAreaSize { 0 };
 
-	sf::Texture mAppleTexture;
+	sf::Texture mAppleTexture, mTropheyTexture;
+	sf::Font mMontserratFont;
+
+	ResourceFile resourceToBytes( LPCWSTR lpName, LPCWSTR lpType );
 
 	void drawCircle( float radius, sf::Vector2f position, sf::Color color );
+	void drawSprite( sf::Texture texture, Coord coord );
+
+	void renderInfobar( int score, int highestScore );
+	void renderTiles( );
+	void renderSnake( Snake snake );
 
 public:
 	sf::RenderWindow window;
 	
-	void createTextures( );
-
-	void drawTiles( );
-	void drawSnake( Snake snake );
-	void drawApple( Coord coord );
+	void renderFrame( GameController gameController );
 	void keysProcessing( GameController& gameController );
+	void createResources( );
 
 	AnimationCycle getAnimationCycleType( );
 	float getAnimationCycle( );
@@ -45,7 +57,7 @@ public:
 
 		sf::ContextSettings contextSettings;
 		contextSettings.antialiasingLevel = 4;
-		window.create(sf::VideoMode( TILE_SIZE * areaSize, TILE_SIZE * areaSize ), "Snake game", sf::Style::Default, contextSettings );
+		window.create(sf::VideoMode( TILE_SIZE * (areaSize + 2), TILE_SIZE * areaSize ), "Snake game", sf::Style::Default, contextSettings );
 	}
 };
 

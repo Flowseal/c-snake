@@ -18,7 +18,8 @@ int main( )
 	GameInterface gameInterface( areaSize );
 	GameController gameController( areaSize );
 
-	gameInterface.createTextures( );
+	gameInterface.createResources( );
+
 	std::thread keyProcessingThread( &GameInterface::keysProcessing, std::ref(gameInterface), std::ref( gameController ) );
 
 	while ( gameInterface.window.isOpen( ) )
@@ -43,9 +44,7 @@ int main( )
 			if ( gameInterface.getAnimationCycleType( ) == AnimationCycle::END )
 				gameController.updateStates( );
 
-			gameInterface.drawTiles( );
-			gameInterface.drawApple( gameController.getApple( ) );
-			gameInterface.drawSnake( gameController.getSnake( ) );
+			gameInterface.renderFrame( gameController );
 		}
 		else
 		{
