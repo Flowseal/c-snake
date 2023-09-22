@@ -28,10 +28,10 @@ void GameInterface::renderFrame( GameController gameController )
 	renderSnake( gameController.getSnake( ) );
 
 	// Scores
-	renderInfobar( gameController.score, gameController.highestScore );
+	renderScorebar( gameController.score, gameController.highestScore );
 }
 
-void GameInterface::renderInfobar( int score, int highestScore )
+void GameInterface::renderScorebar( int score, int highestScore )
 {
 	// Background
 	sf::RectangleShape background( sf::Vector2f( TILE_SIZE * 2, TILE_SIZE * mAreaSize ) );

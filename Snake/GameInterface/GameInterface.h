@@ -36,7 +36,7 @@ private:
 	void drawCircle( float radius, sf::Vector2f position, sf::Color color );
 	void drawSprite( sf::Texture texture, Coord coord );
 
-	void renderInfobar( int score, int highestScore );
+	void renderScorebar( int score, int highestScore );
 	void renderTiles( );
 	void renderSnake( Snake snake );
 
