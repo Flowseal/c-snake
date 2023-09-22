@@ -45,14 +45,19 @@ int main( )
 				gameController.updateStates( );
 
 			gameInterface.renderFrame( gameController );
+			gameInterface.updateAnimationCycle( 10.f / fps );
 		}
-		else
+		else if ( gameController.getPlayerState( ) == PlayerState::RESET )
 		{
 			gameController.reset( );
 		}
+		else if ( gameController.getPlayerState( ) == PlayerState::WIN )
+		{
+			gameInterface.renderFrame( gameController );
+			gameInterface.renderWinScreen( );
+		}
 
 		gameInterface.window.display( );
-		gameInterface.updateAnimationCycle( 10.f / fps );
 		fpsLock.waitForNextFrame( );
 	}
 

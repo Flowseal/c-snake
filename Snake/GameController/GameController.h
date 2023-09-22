@@ -6,7 +6,7 @@
 #include "../Snake/Snake.h"
 
 enum class PlayerState {
-	ALIVE, DIE, WIN
+	ALIVE, RESET, WIN
 };
 
 class GameController {
@@ -15,7 +15,7 @@ private:
 	float mAnimationCycle { 0.f };
 	Coord mApple { };
 	Snake mSnake { };
-	PlayerState mPlayerState { PlayerState::DIE };
+	PlayerState mPlayerState { PlayerState::RESET };
 
 public:
 	int score { 0 };

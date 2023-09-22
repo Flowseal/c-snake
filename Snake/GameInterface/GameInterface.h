@@ -44,6 +44,7 @@ public:
 	sf::RenderWindow window;
 	
 	void renderFrame( GameController gameController );
+	void renderWinScreen( );
 	void keysProcessing( GameController& gameController );
 	void createResources( );
 

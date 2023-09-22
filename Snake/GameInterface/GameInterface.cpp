@@ -147,6 +147,22 @@ void GameInterface::renderSnake( Snake snake )
 	}
 }
 
+void GameInterface::renderWinScreen( )
+{
+	sf::Text winText;
+	winText.setFont( mMontserratFont );
+	winText.setFillColor( sf::Color::White );
+	winText.setCharacterSize( TILE_SIZE - 5 );
+	winText.setString( "WON!\nSpace to restart" );
+
+	sf::FloatRect textRect = winText.getLocalBounds( );
+	winText.setOrigin( textRect.left + textRect.width / 2.0f,
+		textRect.top + textRect.height / 2.0f );
+	winText.setPosition( sf::Vector2f( mAreaSize * TILE_SIZE / 2.f, mAreaSize * TILE_SIZE / 2.f ) );
+
+	window.draw( winText );
+}
+
 void GameInterface::drawCircle( float radius, sf::Vector2f position, sf::Color color )
 {
 	sf::CircleShape circle( radius, 60 );
@@ -216,10 +232,10 @@ void GameInterface::keysProcessing( GameController& gameController )
 			if ( GetKeyState( VK_LEFT ) & 0x8000 )
 				gameController.getSnake( ).setNextMoveDirection( MoveDirection::LEFT );
 		}
-		else
+		else if ( gameController.getPlayerState( ) == PlayerState::WIN )
 		{
 			if ( GetKeyState( VK_SPACE ) & 0x8000 )
-				gameController.setPlayerState( PlayerState::ALIVE );
+				gameController.setPlayerState( PlayerState::RESET );
 		}
 	}
 }
